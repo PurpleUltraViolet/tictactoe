@@ -5,6 +5,7 @@
 #include "game.h"
 
 int main(int argc, char **argv) {
+    srand(time(NULL));
     if(argc >= 2) {
         switch(argv[1][0]) {
         case 'x':
@@ -26,7 +27,6 @@ int main(int argc, char **argv) {
             exit(1);
         }
     } else {
-        srand(time(NULL));
         player = rand() % 2 ? X_VAL : O_VAL;
         opponent = player * -1;
     }

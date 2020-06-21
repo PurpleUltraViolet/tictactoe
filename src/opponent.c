@@ -4,7 +4,9 @@
 #include "opponent.h"
 
 void opponentturn(void) {
-    int cbestmove, cbestscore = -100, tscore;
+    int nummoves = 0, move;
+    int moves[9];
+    int cbestscore = -100, tscore;
     int nb[9];
     for(int i = 0; i < 9; i++) {
         nb[i] = board[i];
@@ -15,15 +17,19 @@ void opponentturn(void) {
             nb[i] = opponent;
             tscore = minimax(nb, 1, 0);
             if(tscore > cbestscore) {
-                cbestmove = i;
                 cbestscore = tscore;
+                moves[0] = i;
+                nummoves = 1;
             }
+            if(tscore == cbestscore)
+                moves[nummoves++] = i;
             nb[i] = 0;
         }
     }
 
-    board[cbestmove] = opponent;
-    printf("I place %c on %d\n", opponent == O_VAL ? 'O' : 'X', cbestmove + 1);
+    move = moves[rand() % nummoves];
+    board[move] = opponent;
+    printf("I place %c on %d\n", opponent == O_VAL ? 'O' : 'X', move + 1);
 }
 
 int minimax(int *b, int shouldmin, int crecdepth) {
