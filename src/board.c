@@ -70,11 +70,11 @@ void board_draw(void) {
                 (board[i] == O_VAL ? 'O' : ' '));
     }
     printf("\n"
-           "%c | %c | %c\t1 | 2 | 3\n"
-           "--+---+--\t--+---+--\n"
-           "%c | %c | %c\t4 | 5 | 6\n"
-           "--+---+--\t--+---+--\n"
-           "%c | %c | %c\t7 | 8 | 9\n"
+           " %c | %c | %c \t 1 | 2 | 3 \n"
+           "---+---+---\t---+---+---\n"
+           " %c | %c | %c \t 4 | 5 | 6 \n"
+           "---+---+---\t---+---+---\n"
+           " %c | %c | %c \t 7 | 8 | 9 \n"
            "\n",
            boardchars[0], boardchars[1], boardchars[2],
            boardchars[3], boardchars[4], boardchars[5],
