@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "board.h"
 #include "opponent.h"
 
 void opponentturn(void) {
     int nummoves = 0, move;
     int moves[9];
-    int cbestscore = -100, tscore;
+    int cbestscore = INT_MIN, tscore;
     int nb[9];
     for(int i = 0; i < 9; i++) {
         nb[i] = board[i];
@@ -15,7 +16,7 @@ void opponentturn(void) {
     for(int i = 0; i < 9; i++) {
         if(nb[i] == 0) {
             nb[i] = opponent;
-            tscore = minimax(nb, 1, 0);
+            tscore = minimax(nb, 1, INT_MIN, INT_MAX, 0);
             if(tscore > cbestscore) {
                 cbestscore = tscore;
                 moves[0] = i;
@@ -32,18 +33,19 @@ void opponentturn(void) {
     printf("I place %c on %d\n", opponent == O_VAL ? 'O' : 'X', move + 1);
 }
 
-int minimax(int *b, int shouldmin, int crecdepth) {
-    crecdepth++;
+int minimax(int *b, int shouldmin, int oalpha, int obeta, int depth) {
+    int alpha = oalpha, beta = obeta;
+    depth++;
     int boardcheck = board_check(b);
     if(boardcheck == opponent)
-        return 10 - crecdepth;
+        return 10 - depth;
     if(boardcheck == player)
-        return crecdepth - 10;
+        return depth - 10;
     else if(boardcheck == 0)
         return 0;
 
     int toadd = shouldmin ? player : opponent;
-    int cbestscore = shouldmin ? 5 : -5, tbestscore;
+    int value = shouldmin ? INT_MAX : INT_MIN, tvalue;
     int *nb = malloc(sizeof(int) * 9);
     if(!nb) {
         fprintf(stderr, "Ran out of memory!\n");
@@ -56,13 +58,20 @@ int minimax(int *b, int shouldmin, int crecdepth) {
     for(int i = 0; i < 9; i++) {
         if(nb[i] == 0) {
             nb[i] = toadd;
-            tbestscore = minimax(nb, !shouldmin, crecdepth);
-            if(shouldmin && tbestscore < cbestscore) cbestscore = tbestscore;
-            if(!shouldmin && tbestscore > cbestscore) cbestscore = tbestscore;
+            tvalue = minimax(nb, !shouldmin, alpha, beta, depth);
+            if(shouldmin) {
+                if(tvalue < value) value = tvalue;
+                beta = beta < value ? beta : value;
+                if(beta <= alpha) break;
+            } else {
+                if(tvalue > value) value = tvalue;
+                alpha = alpha > value ? alpha : value;
+                if(alpha >= beta) break;
+            }
             nb[i] = 0;
         }
     }
 
     free(nb);
-    return cbestscore;
+    return value;
 }

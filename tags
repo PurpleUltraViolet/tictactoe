@@ -33,7 +33,7 @@ board_draw	src/board.c	/^void board_draw(void) {$/;"	f	typeref:typename:void
 clean	Makefile	/^clean :$/;"	t
 gameloop	src/game.c	/^int gameloop(int start) {$/;"	f	typeref:typename:int
 main	src/main.c	/^int main(int argc, char **argv) {$/;"	f	typeref:typename:int
-minimax	src/opponent.c	/^int minimax(int *b, int shouldmin, int crecdepth) {$/;"	f	typeref:typename:int
+minimax	src/opponent.c	/^int minimax(int *b, int shouldmin, int oalpha, int obeta, int depth) {$/;"	f	typeref:typename:int
 opponent	src/board.c	/^int opponent = O_VAL;$/;"	v	typeref:typename:int
 opponentturn	src/opponent.c	/^void opponentturn(void) {$/;"	f	typeref:typename:void
 player	src/board.c	/^int player = X_VAL;$/;"	v	typeref:typename:int
